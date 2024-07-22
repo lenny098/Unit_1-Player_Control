@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour
 {
-    public float verticalSpeed;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] float verticalSpeed;
 
     // Update is called once per frame
     void Update()

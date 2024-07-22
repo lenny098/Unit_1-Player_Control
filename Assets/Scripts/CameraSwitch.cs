@@ -1,16 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraSwitch : MonoBehaviour
 {
-    public Camera thirdPerson;
     public Camera firstPerson;
+    
+    Camera thirdPerson;
+    [SerializeField] Vector3 thirdPersonOffset = new Vector3(0, 13, -14);
+    [SerializeField] Vector3 thirdPersonRotation = new Vector3(30, 0, 0);
 
-    public bool showFirstPerson = false;
-    public bool isPlayer2 = false;
+    [SerializeField] KeyCode switchKey;
 
-    void setCamera()
+    bool showFirstPerson = false;
+
+    void initailzeThirdPersonCamera()
+    {
+        GameObject cameraObject = new GameObject();
+        cameraObject.name = $"Third Person Camera of {gameObject.name}";
+
+        thirdPerson = cameraObject.AddComponent<Camera>();
+        thirdPerson.rect = firstPerson.rect;
+        thirdPerson.transform.eulerAngles = thirdPersonRotation;
+    }
+
+    void setCameras()
     {
         thirdPerson.enabled = !showFirstPerson;
         firstPerson.enabled = showFirstPerson;
@@ -19,17 +31,24 @@ public class CameraSwitch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setCamera();
+        initailzeThirdPersonCamera();
+        setCameras();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(isPlayer2 ? KeyCode.RightControl : KeyCode.LeftControl))
+        if (Input.GetKeyDown(switchKey))
         {
             showFirstPerson = !showFirstPerson;
-
-            setCamera();
+            setCameras();
         }
+    }
+
+    // Use LateUpdate to make sure the camera always moves after player and npc
+    void LateUpdate()
+    {
+        // follow player with an offset
+        thirdPerson.transform.position = gameObject.transform.position + thirdPersonOffset;
     }
 }
