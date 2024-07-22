@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraSwitch : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
     public Camera firstPerson;
     
